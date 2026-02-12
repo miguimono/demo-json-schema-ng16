@@ -1,27 +1,56 @@
-# JsonSchemaNg16
+# json-schema-ng16 demo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+Demo Angular 16 para visualizar el comportamiento de la libreria `@miguimono/json-schema/ng16`.
 
-## Development server
+## Requisitos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Node.js 20+
+- npm 9+
 
-## Code scaffolding
+## Desarrollo local
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+npm ci
+npm start
+```
 
-## Build
+App local: `http://localhost:4200/`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Build de produccion
 
-## Running unit tests
+```bash
+npm run build:prod
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Salida en: `dist/json-schema-ng16`
 
-## Running end-to-end tests
+## Deploy en GitHub Pages
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Este repo ya incluye workflow en `.github/workflows/deploy-pages.yml`.
 
-## Further help
+### 1) Subir a GitHub
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+git add .
+git commit -m "optimize demo and setup GitHub Pages deploy"
+git push origin main
+```
+
+### 2) Configurar Pages en el repo
+
+En GitHub:
+
+1. `Settings` -> `Pages`
+2. `Build and deployment` -> `Source`: **GitHub Actions**
+
+### 3) Validar despliegue
+
+- Ve a `Actions` y espera el workflow **Deploy Angular Demo to GitHub Pages**.
+- Al finalizar, GitHub mostrara la URL publica del sitio.
+
+## Scripts utiles
+
+- `npm run build`: build por defecto de Angular (production)
+- `npm run build:prod`: build explicito de produccion
+- `npm run build:pages`: build local para Pages con `base-href` fijo a `/json-schema-ng16/`
+- `npm test`: pruebas unitarias

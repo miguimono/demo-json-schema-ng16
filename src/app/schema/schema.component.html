@@ -1,0 +1,39 @@
+<div id="schema">
+  <div class="schema-component">
+    <h1>{{ title }}</h1>
+    <ng-container *ngIf="legendVisible">
+      <div class="schema-legend">
+        <ul class="legend-list">
+          <li class="legend-item schema-title">
+            <h3>{{ legendTitle }}</h3>
+          </li>
+          <li class="legend-item" *ngIf="accentByKey as key">
+            <span class="legend-accent-key">
+              Clave de acento: <code>{{ key }}</code>
+            </span>
+          </li>
+          <li
+            class="legend-item"
+            *ngFor="let it of legendItems; trackBy: trackLegendItem"
+          >
+            <span
+              class="legend-dot"
+              [class.dot-true]="it.color === 'green'"
+              [class.dot-false]="it.color === 'red'"
+              [class.dot-null]="it.color === 'grey'"
+              aria-hidden="true"
+            ></span>
+            <span class="legend-text">{{ it.text }}</span>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <div class="schema-wrapper">
+      <schema
+        [data]="schemeData"
+        [settings]="settings"
+        [cardTemplate]="cardTemplate"
+      ></schema>
+    </div>
+  </div>
+</div>
