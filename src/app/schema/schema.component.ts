@@ -48,8 +48,8 @@ export class SchemaComponent implements OnChanges {
   // --- Layout ---
   @Input() layoutAlign: 'firstChild' | 'center' = 'center';
   // --- Viewport ---
-  @Input() viewportHeight: number | null = 600;
-  @Input() minViewportHeight: number | null = 400;
+  @Input() viewportHeight: number | null = 1000;
+  @Input() minViewportHeight: number | null = 1000;
   @Input() showToolbar: boolean = true;
 
   // --- DataView ---
@@ -58,7 +58,7 @@ export class SchemaComponent implements OnChanges {
   @Input() hiddenKeysGlobal: string[] | undefined;
   @Input() noWrapKeys: string[] | undefined;
 
-  @Input() showImage: string | null = null;
+  @Input() showImage: string | null = 'img';
   @Input() imageSizePx: number = 32;
   @Input() imageShape: ImageShape = 'square'; // "square" | "rounded" | "circle"
   @Input() imageBorder: boolean = false;
@@ -115,7 +115,7 @@ export class SchemaComponent implements OnChanges {
 
   trackLegendItem(
     _index: number,
-    item: { color: 'green' | 'red' | 'grey'; text: string }
+    item: { color: 'green' | 'red' | 'grey'; text: string },
   ): string {
     return `${item.color}:${item.text}`;
   }
@@ -160,6 +160,8 @@ export class SchemaComponent implements OnChanges {
         imageFit: this.imageFit,
         enableCollapse: this.enableCollapse,
         autoResizeCards: true,
+        valueShowTooltip: true,
+        valueMaxChars: 50,
       },
     };
   }

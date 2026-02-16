@@ -16,446 +16,416 @@ export class AppComponent {
     {
       jsonSchema: 'json-schema-ng16',
       data: {
-        dataset: {
-          id: 'ai_ds_2026_02_11_0001',
-          title: 'AI Lab - Dataset de Prueba para JSON-Schema',
-          subtitle:
-            'Tema: IA aplicada (LLMs, MLOps, ética, RAG, agentes, evaluación)',
-          version: {
-            major: 1,
-            minor: 3,
-            patch: 7,
-            releaseTag: 'beta',
-            isStable: false,
-          },
-          flags: {
-            active: true,
-            archived: false,
-            containsPII: false,
-            hasSyntheticData: true,
-            needsReview: true,
-            gdprAligned: true,
-          },
-          timestamps: {
-            createdAt: '2026-02-11T02:00:00-05:00',
-            updatedAt: '2026-02-11T02:10:00-05:00',
-            lastValidatedAt: null,
-          },
-          meta: {
-            owner: {
-              team: 'ML Platform',
-              contact: {
-                name: 'Soporte IA',
-                email: 'ai-support@example.com',
-                slack: '#ml-platform',
-                pagerDuty: null,
-              },
-            },
-            tags: [
-              'llm',
-              'rag',
-              'agents',
-              'evaluation',
-              'mlops',
-              'safety',
-              'telemetry',
-              'prompting',
-            ],
-            notesShort:
-              'Dataset mixto: configs, experimentos, métricas y artefactos.',
-            notesLong:
-              'Este JSON está diseñado para estresar un visualizador/esquematizador: mezcla tipos (string/number/bool/null), arrays heterogéneos, objetos anidados profundos (>=5 niveles), textos largos/cortos, y estructuras que parecen reales en un proyecto de IA (pipelines, RAG, agentes, evaluaciones, trazas). No contiene datos personales reales.',
-          },
-          aiProgram: {
-            programName: 'Proyecto Atlas',
-            goal: 'Mejorar la precisión de respuestas y reducir alucinaciones en un asistente corporativo.',
-            domains: [
+        level: 'nivel 0',
+        title: 'Árbol de Prueba',
+        subtitle:
+          'Dataset jerárquico con banderas, textos y variación de estructura',
+        isTrue: true,
+        isFalse: false,
+        isNull: null,
+        children: [
+          {
+            level: 'Nivel 1',
+            info: 'Información adicional del nivel 1',
+            title: 'Fundamentos',
+            subtitle: 'Conceptos base de IA',
+            priority: 1,
+            isTrue: true,
+            children: [
               {
-                name: 'Soporte Técnico',
-                priority: 1,
-                enabled: true,
-                useCases: [
+                level: 'Nivel 1.1',
+                info: 'Información adicional del nivel 1.1',
+                img: 'assets/img.png',
+                children: [
                   {
-                    useCaseId: 'UC-001',
-                    title: 'Asistente para incidentes',
-                    subtitle: 'Clasificación + sugerencias de solución',
-                    expectedImpact: {
-                      kpi: 'MTTR',
-                      targetReductionPercent: 18.5,
-                      baseline: 9.2,
-                      baselineUnit: 'hours',
-                      target: 7.5,
-                      targetUnit: 'hours',
+                    level: 'Nivel 1.1.1',
+                    info: 'Información adicional del nivel 1.1.1',
+                    title: 'Modelos y entrenamiento',
+                    subtitle: 'De datos a predicciones',
+                    params: {
+                      learningRate: 0.0003,
+                      batchSize: 32,
+                      epochs: 3,
+                      seed: 12345,
+                      isNull: null,
                     },
-                    requirements: {
-                      latencyMsP95: 1200,
-                      availabilityPercent: 99.9,
-                      mustCiteSources: true,
-                      languages: ['es', 'en'],
-                      disallowContent: [
-                        'secrets',
-                        'credentials',
-                        'personal-data',
-                      ],
-                      canUseTools: true,
-                    },
-                  },
-                ],
-              },
-              {
-                name: 'Finanzas',
-                priority: 2,
-                enabled: false,
-                useCases: [],
-              },
-            ],
-            architecture: {
-              pattern: 'RAG + Tools',
-              components: {
-                llm: {
-                  provider: 'Open',
-                  model: 'gpt-x',
-                  temperature: 0.2,
-                  maxTokens: 1200,
-                  topP: 0.9,
-                  stopSequences: ['<END>'],
-                  safety: {
-                    enabled: true,
-                    policy: {
-                      harmfulContent: true,
-                      selfHarm: true,
-                      privacy: true,
-                      copyright: true,
-                    },
-                    fallbackResponse: 'No puedo ayudar con eso.',
-                  },
-                },
-                retrieval: {
-                  enabled: true,
-                  strategy: 'hybrid',
-                  index: {
-                    name: 'kb_corporate_v2',
-                    embeddingModel: 'text-embedding-x',
-                    dimensions: 1536,
-                    chunking: {
-                      method: 'semantic',
-                      maxChars: 1200,
-                      overlapChars: 150,
-                      splitBy: ['heading', 'paragraph', 'sentence'],
-                    },
-                  },
-                  reranker: {
-                    enabled: true,
-                    model: 'rerank-x',
-                    topK: 12,
-                    threshold: 0.35,
-                  },
-                },
-                tools: {
-                  enabled: true,
-                  available: [
-                    {
-                      name: 'ticket.lookup',
-                      type: 'internal_api',
-                      timeoutMs: 900,
-                      retries: 2,
-                      permissions: ['read:tickets'],
-                    },
-                    {
-                      name: 'status.page',
-                      type: 'http',
-                      timeoutMs: 800,
-                      retries: 1,
-                      permissions: ['read:status'],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-          experiments: [
-            {
-              experimentId: 'EXP-2026-0007',
-              title: 'RAG: chunking semántico vs fijo',
-              subtitle: 'Comparación para mejorar exactitud y citas',
-              enabled: true,
-              hypothesis:
-                'El chunking semántico reduce respuestas con contexto incompleto.',
-              variables: {
-                chunkingMode: 'semantic',
-                chunkSize: 1200,
-                overlap: 150,
-                rerankTopK: 12,
-                temperature: 0.2,
-              },
-              metrics: {
-                faithfulnessScore: 0.86,
-                answerRelevancy: 0.81,
-                citationPrecision: 0.74,
-                latencyMsP95: 1188,
-                costUsdPer1kTokens: 0.012,
-                passed: true,
-                notes: 'Buen balance; la latencia sube levemente con reranker.',
-              },
-              artifacts: {
-                promptTemplate: {
-                  system: 'Eres un asistente técnico que cita fuentes.',
-                  user: 'Resuelve el caso y cita documentos relevantes.',
-                  guards: {
-                    mustCite: true,
-                    noSecrets: true,
-                    maxSteps: 6,
-                  },
-                },
-                evaluation: {
-                  suite: 'qa_regression_v3',
-                  samples: [
-                    {
-                      sampleId: 'S-001',
-                      question: '¿Cómo reinicio un servicio sin perder logs?',
-                      expected:
-                        'Indicar procedimiento con systemd y ubicación de logs.',
-                      labels: ['linux', 'ops'],
-                      result: {
-                        passed: true,
-                        score: 0.92,
-                        explanations: [
-                          'Incluyó pasos correctos.',
-                          'Citas presentes.',
-                        ],
-                        trace: {
-                          traceId: 'tr_9f2a',
-                          steps: [
-                            {
-                              step: 1,
-                              type: 'retrieve',
-                              details: {
-                                query:
-                                  'reiniciar servicio sin perder logs systemd',
-                                hits: 8,
-                                topDoc: {
-                                  docId: 'DOC-ops-22',
-                                  title: 'Guía systemd',
-                                  confidence: 0.77,
+                    children: [
+                      {
+                        level: 'Nivel 1.1.1.1',
+                        info: 'Información adicional del nivel 1.1.1.1',
+                        textLong:
+                          'Texto largo de prueba: en un flujo real de IA, este nodo podría contener una explicación extensa sobre el proceso de entrenamiento, la importancia del preprocesamiento, el balance de clases, el overfitting, y el monitoreo de métricas. Este texto sirve para probar scroll, wrap, truncado y performance. Incluye números (123456), símbolos (@#%&), y saltos de línea.\nLínea 2: más contenido.\nLínea 3: aún más contenido para forzar render.',
+                        isFalse: false,
+                        children: [
+                          {
+                            level: 'Nivel 1.1.1.1.1',
+                            info: 'Información adicional del nivel 1.1.1.1.1',
+                            children: [
+                              {
+                                level: 'Nivel 1.1.1.1.1.1',
+                                info: 'Información adicional del nivel 1.1.1.1.1.1',
+                                title: 'Fine-tuning',
+                                subtitle: 'Ajuste a dominio específico',
+                                isTrue: true,
+                              },
+                            ],
+                          },
+                          {
+                            level: 'Nivel 1.1.1.1.2',
+                            info: 'Información adicional del nivel 1.1.1.1.2',
+                            subtitle: 'Validación y control',
+                            children: [
+                              {
+                                level: 'Nivel 1.1.1.1.2.1',
+                                info: 'Información adicional del nivel 1.1.1.1.2.1',
+                                title: 'Split de datos',
+                                subtitle: 'train/val/test',
+                                isNull: null,
+                                ratios: { train: 0.8, val: 0.1, test: 0.1 },
+                              },
+                              {
+                                level: 'Nivel 1.1.1.1.2.2',
+                                info: 'Información adicional del nivel 1.1.1.1.2.2',
+                                notesShort: 'Nodo con array vacío intencional.',
+                                children: [],
+                              },
+                            ],
+                          },
+                          {
+                            level: 'Nivel 1.1.1.1.3',
+                            info: 'Información adicional del nivel 1.1.1.1.3',
+                            title: 'Evaluación',
+                            subtitle: 'Métricas, sesgos y reporte',
+                            metrics: {
+                              accuracy: 0.91,
+                              f1: 0.88,
+                              precision: 0.9,
+                              recall: 0.86,
+                              isTrue: true,
+                            },
+                            children: [
+                              {
+                                level: 'Nivel 1.1.1.1.3.1',
+                                info: 'Información adicional del nivel 1.1.1.1.3.1',
+                                notesShort: 'Texto corto.',
+                              },
+                              {
+                                level: 'Nivel 1.1.1.1.3.2',
+                                info: 'Información adicional del nivel 1.1.1.1.3.2',
+                                textLong:
+                                  'Otro texto largo de prueba, no exagerado: sirve para validar cómo tu UI muestra párrafos medianos. Aquí se menciona explicabilidad, fairness, drift, y evaluación continua en producción.',
+                              },
+                              {
+                                level: 'Nivel 1.1.1.1.3.3',
+                                info: 'Información adicional del nivel 1.1.1.1.3.3',
+                                flags: {
+                                  isTrue: true,
+                                  isFalse: false,
+                                  isNull: null,
                                 },
                               },
-                            },
-                            {
-                              step: 2,
-                              type: 'generate',
-                              details: {
-                                tokensIn: 812,
-                                tokensOut: 233,
-                                finishReason: 'stop',
-                                safetyTriggered: false,
-                              },
-                            },
-                          ],
-                        },
+                            ],
+                          },
+                        ],
                       },
-                    },
-                  ],
-                  summary: {
-                    total: 1,
-                    passed: 1,
-                    failed: 0,
-                    skipped: 0,
-                    runTimeSec: 14.3,
-                  },
-                },
-              },
-            },
-            {
-              experimentId: 'EXP-2026-0011',
-              title: 'Agentes: planificación corta vs larga',
-              subtitle: 'Menos pasos, menos costo',
-              enabled: false,
-              hypothesis:
-                'Planificación corta reduce costo sin bajar calidad en tickets simples.',
-              variables: {
-                planner: {
-                  style: 'short',
-                  maxSteps: 4,
-                  allowToolLoop: true,
-                },
-                executor: {
-                  maxToolCalls: 3,
-                  timeoutMs: 2000,
-                },
-              },
-              metrics: {
-                faithfulnessScore: 0.79,
-                answerRelevancy: 0.76,
-                citationPrecision: 0.61,
-                latencyMsP95: 940,
-                costUsdPer1kTokens: 0.009,
-                passed: false,
-                notes: 'Perdió calidad en casos con múltiples fuentes.',
-              },
-            },
-          ],
-          ragPipelines: [
-            {
-              pipelineId: 'RAG-P-01',
-              title: 'Ingesta KB corporativa',
-              enabled: true,
-              sourceTypes: ['pdf', 'html', 'md', 'confluence'],
-              ingestion: {
-                schedule: '0 */6 * * *',
-                lastRun: '2026-02-10T18:00:00-05:00',
-                nextRun: '2026-02-12T00:00:00-05:00',
-                errors: [],
-                stats: {
-                  docsFetched: 412,
-                  docsIndexed: 398,
-                  docsFailed: 14,
-                  avgChunkCount: 9.4,
-                },
-              },
-              qualityGates: {
-                minLanguageConfidence: 0.8,
-                maxPIIScore: 0.1,
-                duplicateDetection: {
-                  enabled: true,
-                  method: 'minhash',
-                  threshold: 0.92,
-                },
-              },
-              deepConfig: {
-                level1: {
-                  level2: {
-                    level3: {
-                      level4: {
-                        level5: {
-                          switches: {
-                            enableCache: true,
-                            enableVectorCompression: false,
-                            experimentalTokenizer: null,
+                      {
+                        level: 'Nivel 1.1.1.2',
+                        info: 'Información adicional del nivel 1.1.1.2',
+                        title: 'Datos',
+                        subtitle: 'Calidad y gobierno',
+                        children: [
+                          {
+                            level: 'Nivel 1.1.1.2.1',
+                            info: 'Información adicional del nivel 1.1.1.2.1',
+                            owner: { name: 'Data Steward', active: true },
+                            isTrue: true,
                           },
-                          limits: {
-                            maxDocsPerQuery: 20,
-                            maxTotalContextTokens: 6000,
-                            maxCitations: 6,
+                          {
+                            level: 'Nivel 1.1.1.2.2',
+                            info: 'Información adicional del nivel 1.1.1.2.2',
+                            children: [],
+                            isFalse: false,
+                            extra: {
+                              source: 'synthetic',
+                              piiRisk: 0.0,
+                              url: 'https://example.com/datasets/ai',
+                            },
                           },
-                          strings: {
-                            short: 'ok',
-                            long: 'Texto largo de prueba: este bloque existe para validar truncado, wrap, y performance. Incluye números (12345), símbolos (@#%&), y saltos de línea.\nLínea 2.\nLínea 3 con más contenido para forzar scroll.',
-                          },
-                        },
+                        ],
                       },
-                    },
+                      {
+                        level: 'Nivel 1.1.1.3',
+                        info: 'Información adicional del nivel 1.1.1.3',
+                        children: [],
+                        subtitle: 'Nodo hoja sin hijos',
+                        isNull: null,
+                      },
+                    ],
                   },
-                },
-              },
-            },
-          ],
-          safetyAndEthics: {
-            title: 'Políticas de Seguridad y Ética',
-            subtitle: 'Controles para uso responsable',
-            principles: [
-              {
-                name: 'Privacidad',
-                description:
-                  'No exponer información sensible ni datos personales.',
-                enabled: true,
-                exceptions: [],
-              },
-              {
-                name: 'Transparencia',
-                description: 'Citar fuentes y explicar supuestos.',
-                enabled: null,
-                exceptions: [
                   {
-                    case: 'Conversación casual',
-                    allowed: true,
-                    reason: 'No se requiere cita para contenido no factual.',
+                    level: 'Nivel 1.1.2',
+                    info: 'Información adicional del nivel 1.1.2',
+                    title: 'Prompting',
+                    subtitle: 'Instrucciones y formatos',
+                    children: [
+                      {
+                        level: 'Nivel 1.1.2.1',
+                        info: 'Información adicional del nivel 1.1.2.1',
+                        examples: [
+                          {
+                            role: 'system',
+                            text: 'Eres un asistente conciso.',
+                          },
+                          { role: 'user', text: 'Resume este documento.' },
+                        ],
+                      },
+                      {
+                        level: 'Nivel 1.1.2.2',
+                        info: 'Información adicional del nivel 1.1.2.2',
+                        isTrue: true,
+                        params: { temperature: 0.2, topP: 0.9 },
+                      },
+                      {
+                        level: 'Nivel 1.1.2.3',
+                        info: 'Información adicional del nivel 1.1.2.3',
+                        notesShort:
+                          'Checklist: claridad, contexto, restricciones.',
+                      },
+                    ],
+                  },
+                  {
+                    level: 'Nivel 1.1.3',
+                    info: 'Información adicional del nivel 1.1.3',
+                    children: [],
+                    title: 'Embeddings',
+                    subtitle: 'Vectorización de texto',
+                    isFalse: false,
+                  },
+                  {
+                    level: 'Nivel 1.1.4',
+                    info: 'Información adicional del nivel 1.1.4',
+                    children: [],
+                    notesShort: 'Nodo vacío a propósito',
+                    isNull: null,
+                  },
+                ],
+              },
+              {
+                level: 'Nivel 1.2',
+                info: 'Información adicional del nivel 1.2',
+                subtitle: 'Modelos generativos',
+                children: [
+                  {
+                    level: 'Nivel 1.2.1',
+                    info: 'Información adicional del nivel 1.2.1',
+                    title: 'LLMs',
+                    subtitle: 'Lenguaje a gran escala',
+                    isTrue: true,
+                    textLong:
+                      'Los LLMs se usan para generación, resumen, extracción y razonamiento asistido. Este texto es moderadamente largo para validar UI.',
+                  },
+                  {
+                    level: 'Nivel 1.2.2',
+                    info: 'Información adicional del nivel 1.2.2',
+                    title: 'Diffusion',
+                    subtitle: 'Modelos para imagen',
+                    isFalse: false,
                   },
                 ],
               },
             ],
-            riskRegister: [
-              {
-                riskId: 'R-01',
-                title: 'Alucinación en respuestas sin evidencia',
-                severity: 'high',
-                mitigation: {
-                  controls: [
-                    'RAG con umbral de confianza',
-                    'Rechazar si no hay fuentes',
-                    'Evaluación continua',
-                  ],
-                  owner: 'AI Governance',
-                  status: 'in_progress',
-                  dueDate: '2026-03-15',
-                },
-              },
-              {
-                riskId: 'R-02',
-                title: 'Fuga de secretos por prompt injection',
-                severity: 'critical',
-                mitigation: {
-                  controls: [
-                    'Sanitización de entradas',
-                    'Política de herramientas',
-                    'Red-teaming mensual',
-                  ],
-                  owner: 'Security',
-                  status: 'planned',
-                  dueDate: null,
-                },
-              },
-            ],
           },
-          mixedTypesShowcase: {
-            title: 'Showcase de Tipos',
-            subtitle: 'Arrays heterogéneos y nulls',
-            values: [
-              'texto',
-              42,
-              3.14159,
-              true,
-              false,
-              null,
+          {
+            level: 'Nivel 2',
+            info: 'Información adicional del nivel 2',
+            title: 'MLOps',
+            subtitle: 'Operación y despliegue',
+            children: [
               {
-                nested: {
-                  a: 1,
-                  b: 'dos',
-                  c: false,
-                },
-              },
-              [
-                'lista',
-                99,
-                {
-                  deep: {
-                    x: 'y',
+                level: 'Nivel 2.1',
+                info: 'Información adicional del nivel 2.1',
+                children: [
+                  {
+                    level: 'Nivel 2.1.1',
+                    info: 'Información adicional del nivel 2.1.1',
+                    title: 'CI/CD',
+                    subtitle: 'Pipelines para modelos',
+                    isTrue: true,
                   },
-                },
-              ],
+                  {
+                    level: 'Nivel 2.1.2',
+                    info: 'Información adicional del nivel 2.1.2',
+                    subtitle: 'Observabilidad',
+                    telemetry: {
+                      traces: true,
+                      logs: true,
+                      metrics: true,
+                      isNull: null,
+                    },
+                  },
+                ],
+              },
+              {
+                level: 'Nivel 2.2',
+                info: 'Información adicional del nivel 2.2',
+                children: [
+                  {
+                    level: 'Nivel 2.2.1',
+                    info: 'Información adicional del nivel 2.2.1',
+                    title: 'Rollouts',
+                    subtitle: 'Canary / Blue-Green',
+                    isFalse: false,
+                    params: { canaryPercent: 10, windowMin: 30 },
+                  },
+                  {
+                    level: 'Nivel 2.2.2',
+                    info: 'Información adicional del nivel 2.2.2',
+                    title: 'Feature Flags',
+                    subtitle: 'Activación gradual',
+                    isTrue: true,
+                    flags: ['rag_enabled', 'rerank_enabled', 'tools_enabled'],
+                  },
+                ],
+              },
             ],
           },
-          appendix: {
-            title: 'Apéndice',
-            subtitle: 'Objetos para stress-test',
-            loremShort: 'IA útil, no mágica.',
-            loremLong:
-              'Un párrafo más largo para probar render: El objetivo de este apéndice es forzar al visualizador a manejar bloques extensos, saltos de línea, y mezcla de caracteres. También incluye claves con nombres variados y estructuras repetidas pero con valores distintos.',
-            edgeCases: {
-              emptyObject: {},
-              emptyArray: [],
-              zero: 0,
-              negative: -13,
-              bigNumber: 9999999999,
-              weirdStrings: {
-                withQuotes: 'Dijo: "hola" y se fue.',
-                withUnicode: 'áéíóú ñ ü 漢字',
-                withPath: 'C:\\data\\models\\run_01',
-                withUrl: 'https://example.com/docs?id=1&ref=ai',
-                withTemplate: '{{user.name}} - {{ticket.id}}',
+          {
+            level: 'Nivel 3',
+            info: 'Información adicional del nivel 3',
+            title: 'RAG y Agentes',
+            subtitle: 'Recuperación, herramientas y orquestación',
+            children: [
+              {
+                level: 'Nivel 3.1',
+                info: 'Información adicional del nivel 3.1',
+                children: [
+                  {
+                    level: 'Nivel 3.1.1',
+                    info: 'Información adicional del nivel 3.1.1',
+                    title: 'Retrieval',
+                    subtitle: 'Búsqueda híbrida',
+                    params: { topK: 12, threshold: 0.35 },
+                  },
+                  {
+                    level: 'Nivel 3.1.2',
+                    info: 'Información adicional del nivel 3.1.2',
+                    title: 'Reranking',
+                    subtitle: 'Mejorar relevancia',
+                    isTrue: true,
+                  },
+                ],
               },
-            },
+              {
+                level: 'Nivel 3.2',
+                info: 'Información adicional del nivel 3.2',
+                title: 'Agentes',
+                subtitle: 'Planificación y ejecución',
+                children: [
+                  {
+                    level: 'Nivel 3.2.1',
+                    info: 'Información adicional del nivel 3.2.1',
+                    notesShort: 'Nodo simple para comparar.',
+                  },
+                  {
+                    level: 'Nivel 3.2.2',
+                    info: 'Información adicional del nivel 3.2.2',
+                    title: 'Orquestador',
+                    subtitle: 'Level 3.2.2 con más hijos',
+                    isTrue: true,
+                    isFalse: false,
+                    isNull: null,
+                    children: [
+                      {
+                        level: 'Nivel 3.2.2.1',
+                        info: 'Hijo 1 adicional',
+                        title: 'Planner',
+                        subtitle: 'Define pasos',
+                        params: { maxSteps: 6, style: 'short' },
+                        children: [
+                          {
+                            level: 'Nivel 3.2.2.1.1',
+                            info: 'Nieto',
+                            notesShort: 'Paso 1: entender el objetivo',
+                            isTrue: true,
+                          },
+                          {
+                            level: 'Nivel 3.2.2.1.2',
+                            info: 'Nieto',
+                            textLong:
+                              'Texto medio para probar render: el planner puede generar una lista de acciones, priorizarlas, y decidir si requiere herramientas. Aquí se simula esa explicación con un párrafo no tan largo.',
+                            isFalse: false,
+                          },
+                        ],
+                      },
+                      {
+                        level: 'Nivel 3.2.2.2',
+                        info: 'Hijo 2 adicional',
+                        title: 'Executor',
+                        subtitle: 'Llama herramientas',
+                        tools: [
+                          { name: 'search.kb', enabled: true },
+                          { name: 'ticket.lookup', enabled: false },
+                        ],
+                        children: [
+                          {
+                            level: 'Nivel 3.2.2.2.1',
+                            info: 'Nieto',
+                            title: 'Tool Call',
+                            subtitle: 'Ejemplo',
+                            payload: {
+                              query: 'errores 500 api',
+                              topK: 5,
+                              isNull: null,
+                            },
+                            isTrue: true,
+                          },
+                        ],
+                      },
+                      {
+                        level: 'Nivel 3.2.2.3',
+                        info: 'Hijo 3 adicional',
+                        title: 'Guardrails',
+                        subtitle: 'Seguridad',
+                        policies: {
+                          noSecrets: true,
+                          noPII: true,
+                          copyright: true,
+                          selfHarm: true,
+                        },
+                        children: [],
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                level: 'Nivel 3.3',
+                info: 'Información adicional del nivel 3.3',
+                children: [
+                  {
+                    level: 'Nivel 3.3.1',
+                    info: 'Información adicional del nivel 3.3.1',
+                    title: 'Evaluación RAG',
+                    subtitle: 'Faithfulness / relevancia',
+                    scores: {
+                      faithfulness: 0.86,
+                      relevancy: 0.81,
+                      isTrue: true,
+                    },
+                  },
+                  {
+                    level: 'Nivel 3.3.2',
+                    info: 'Información adicional del nivel 3.3.2',
+                    title: 'Citas',
+                    subtitle: 'Precisión de fuentes',
+                    isFalse: false,
+                    notesShort: 'Nodo con valores simples.',
+                  },
+                ],
+              },
+            ],
           },
-        },
+        ],
       },
     },
   ];
@@ -465,7 +435,7 @@ export class AppComponent {
   readonly damageOptions = {
     title: 'JsonSchema-ng16',
     labelData: LABEL_DATA,
-    accentByKey: 'enabled',
+    accentByKey: 'isTrue',
     accentFill: true,
     jsonTitleKeys: JSON_TITLE_KEYS,
     showColorTrue: true,
