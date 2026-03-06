@@ -1,23 +1,29 @@
-<div class="main">
-  <app-schema
-    [title]="damageOptions.title"
-    [id]="id"
-    [schemeData]="data"
-    [isLoading]="showLoader"
-    [isError]="isError!"
-    [labelData]="damageOptions.labelData"
-    [accentByKey]="damageOptions.accentByKey"
-    [accentFill]="damageOptions.accentFill"
-    [showColorTrue]="damageOptions.showColorTrue"
-    [showColorFalse]="damageOptions.showColorFalse"
-    [showColorNull]="damageOptions.showColorNull"
-    [descriptionShowColorTrue]="damageOptions.descriptionShowColorTrue"
-    [descriptionShowColorFalse]="damageOptions.descriptionShowColorFalse"
-    [descriptionShowColorNull]="damageOptions.descriptionShowColorNull"
-  ></app-schema>
+<div class="playground-shell" *ngIf="isBrowser; else loadingTpl">
+  <app-config-banner
+    class="config-module"
+    [defaultJsonObject]="defaultJsonObject"
+    (schemaSettingsChange)="onSettingsChange($event)"
+    (renderDataChange)="onRenderDataChange($event)"
+  ></app-config-banner>
 
-  <h1>Json completo:</h1>
-  <p>
-    {{ data | json }}
-  </p>
+  <main class="content-column">
+    <app-title-module
+      [title]="schemaTitle"
+      [subtitle]="'Version de libreria: ' + schemaLibraryVersion"
+    ></app-title-module>
+
+    <section class="schema-module">
+      <app-schema
+        [schemeData]="renderData"
+        [schemaSettings]="settingsFormModel"
+        [descriptionShowColorTrue]="'true'"
+        [descriptionShowColorFalse]="'false'"
+        [descriptionShowColorNull]="'null'"
+      ></app-schema>
+    </section>
+  </main>
 </div>
+
+<ng-template #loadingTpl>
+  <p>Cargando visualizador...</p>
+</ng-template>

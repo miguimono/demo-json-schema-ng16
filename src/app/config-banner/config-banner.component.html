@@ -1,0 +1,1255 @@
+<button
+  type="button"
+  class="mobile-sidebar-toggle"
+  (click)="toggleMobileSidebar()"
+>
+  Configurar playground
+</button>
+
+<button
+  *ngIf="isSidebarOpenMobile"
+  type="button"
+  class="sidebar-overlay"
+  aria-label="Cerrar panel"
+  (click)="closeMobileSidebar()"
+></button>
+
+<aside class="sidebar" [class.sidebar-open]="isSidebarOpenMobile">
+  <div class="sidebar-header">
+    <h2>Banner de configuracion</h2>
+    <button type="button" class="close-sidebar" (click)="closeMobileSidebar()">
+      Cerrar
+    </button>
+  </div>
+
+  <details open>
+    <summary title="Entrada JSON que se grafica en el schema.">
+      JSON de entrada
+    </summary>
+    <div class="panel-section">
+      <div class="toggle-row">
+        <button
+          type="button"
+          [class.active]="jsonMode === 'custom'"
+          (click)="setJsonMode('custom')"
+        >
+          Escribir
+        </button>
+        <button
+          type="button"
+          [class.active]="jsonMode === 'default'"
+          (click)="setJsonMode('default')"
+        >
+          Valores por defecto
+        </button>
+      </div>
+
+      <textarea
+        rows="10"
+        [readonly]="jsonMode === 'default'"
+        [value]="jsonMode === 'default' ? defaultJsonText : editorJsonText"
+        (input)="onJsonTextInput($event)"
+      ></textarea>
+
+      <button type="button" class="primary-btn" (click)="applyJsonFromEditor()">
+        Graficar
+      </button>
+
+      <p class="field-error" *ngIf="jsonError">{{ jsonError }}</p>
+    </div>
+  </details>
+
+  <h3 class="schema-settings-title">SchemaSettings</h3>
+
+  <details open>
+    <summary title="Mensajes y estados de carga/error/vacio.">messages</summary>
+    <div class="panel-section">
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('messages.isLoading')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.messages?.isLoading ?? false"
+          (change)="onBooleanField('messages.isLoading', $event)"
+        />
+        isLoading
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('messages.isError')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.messages?.isError ?? false"
+          (change)="onBooleanField('messages.isError', $event)"
+        />
+        isError
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('messages.loadingMessage')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        loadingMessage
+        <input
+          type="text"
+          [value]="settingsFormModel.messages?.loadingMessage ?? ''"
+          (input)="onTextField('messages.loadingMessage', $event)"
+        />
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('messages.errorMessage')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        errorMessage
+        <input
+          type="text"
+          [value]="settingsFormModel.messages?.errorMessage ?? ''"
+          (input)="onTextField('messages.errorMessage', $event)"
+        />
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('messages.emptyMessage')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        emptyMessage
+        <input
+          type="text"
+          [value]="settingsFormModel.messages?.emptyMessage ?? ''"
+          (input)="onTextField('messages.emptyMessage', $event)"
+        />
+      </label>
+    </div>
+  </details>
+
+  <details open>
+    <summary title="Personalizacion de colores y acentos del schema.">
+      colors
+    </summary>
+    <div class="panel-section">
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.linkStroke')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        linkStroke
+        <div class="color-control">
+          <input
+            class="color-picker"
+            type="color"
+            [value]="settingsFormModel.colors?.linkStroke ?? '#019df4'"
+            (input)="onTextField('colors.linkStroke', $event)"
+          />
+          <span
+            class="color-swatch"
+            [style.background]="
+              settingsFormModel.colors?.linkStroke ?? '#019df4'
+            "
+            aria-hidden="true"
+          ></span>
+          <code>{{ settingsFormModel.colors?.linkStroke ?? "#019df4" }}</code>
+        </div>
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.linkStrokeWidth')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        linkStrokeWidth
+        <input
+          type="number"
+          min="1"
+          max="12"
+          [value]="settingsFormModel.colors?.linkStrokeWidth ?? 2"
+          (input)="
+            onNumberField('colors.linkStrokeWidth', $event, { min: 1, max: 12 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('colors.linkStrokeWidth') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.accentByKey')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        accentByKey
+        <input
+          type="text"
+          [value]="settingsFormModel.colors?.accentByKey ?? ''"
+          (input)="
+            onTextField('colors.accentByKey', $event, { nullable: true })
+          "
+        />
+      </label>
+
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.accentInverse')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.colors?.accentInverse ?? false"
+          (change)="onBooleanField('colors.accentInverse', $event)"
+        />
+        accentInverse
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.accentFill')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.colors?.accentFill ?? false"
+          (change)="onBooleanField('colors.accentFill', $event)"
+        />
+        accentFill
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.showColorTrue')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.colors?.showColorTrue ?? false"
+          (change)="onBooleanField('colors.showColorTrue', $event)"
+        />
+        showColorTrue
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.showColorFalse')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.colors?.showColorFalse ?? false"
+          (change)="onBooleanField('colors.showColorFalse', $event)"
+        />
+        showColorFalse
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.showColorNull')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.colors?.showColorNull ?? false"
+          (change)="onBooleanField('colors.showColorNull', $event)"
+        />
+        showColorNull
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.colorTrue')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        colorTrue
+        <div class="color-control">
+          <input
+            class="color-picker"
+            type="color"
+            [value]="settingsFormModel.colors?.colorTrue ?? '#16a34a'"
+            (input)="onTextField('colors.colorTrue', $event)"
+          />
+          <span
+            class="color-swatch"
+            [style.background]="
+              settingsFormModel.colors?.colorTrue ?? '#16a34a'
+            "
+            aria-hidden="true"
+          ></span>
+          <code>{{ settingsFormModel.colors?.colorTrue ?? "#16a34a" }}</code>
+        </div>
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.colorFalse')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        colorFalse
+        <div class="color-control">
+          <input
+            class="color-picker"
+            type="color"
+            [value]="settingsFormModel.colors?.colorFalse ?? '#dc2626'"
+            (input)="onTextField('colors.colorFalse', $event)"
+          />
+          <span
+            class="color-swatch"
+            [style.background]="
+              settingsFormModel.colors?.colorFalse ?? '#dc2626'
+            "
+            aria-hidden="true"
+          ></span>
+          <code>{{ settingsFormModel.colors?.colorFalse ?? "#dc2626" }}</code>
+        </div>
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('colors.colorNull')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        colorNull
+        <div class="color-control">
+          <input
+            class="color-picker"
+            type="color"
+            [value]="settingsFormModel.colors?.colorNull ?? '#6b7280'"
+            (input)="onTextField('colors.colorNull', $event)"
+          />
+          <span
+            class="color-swatch"
+            [style.background]="
+              settingsFormModel.colors?.colorNull ?? '#6b7280'
+            "
+            aria-hidden="true"
+          ></span>
+          <code>{{ settingsFormModel.colors?.colorNull ?? "#6b7280" }}</code>
+        </div>
+      </label>
+    </div>
+  </details>
+
+  <details open>
+    <summary title="Opciones de distribucion y forma de enlaces en el grafo.">
+      layout
+    </summary>
+    <div class="panel-section">
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.layoutDirection')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        layoutDirection
+        <select
+          [value]="settingsFormModel.layout?.layoutDirection ?? 'RIGHT'"
+          (change)="onTextField('layout.layoutDirection', $event)"
+        >
+          <option value="RIGHT">RIGHT</option>
+          <option value="DOWN">DOWN</option>
+        </select>
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.layoutAlign')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        layoutAlign
+        <select
+          [value]="settingsFormModel.layout?.layoutAlign ?? 'firstChild'"
+          (change)="onTextField('layout.layoutAlign', $event)"
+        >
+          <option value="firstChild">firstChild</option>
+          <option value="center">center</option>
+        </select>
+      </label>
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.linkStyle')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        linkStyle
+        <select
+          [value]="settingsFormModel.layout?.linkStyle ?? 'curve'"
+          (change)="onTextField('layout.linkStyle', $event)"
+        >
+          <option value="curve">curve</option>
+          <option value="orthogonal">orthogonal</option>
+          <option value="line">line</option>
+        </select>
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.curveTension')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        curveTension
+        <input
+          type="number"
+          min="20"
+          max="200"
+          [value]="settingsFormModel.layout?.curveTension ?? 30"
+          (input)="
+            onNumberField('layout.curveTension', $event, { min: 20, max: 200 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('layout.curveTension') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.straightThresholdDx')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        straightThresholdDx
+        <input
+          type="number"
+          min="20"
+          max="400"
+          [value]="settingsFormModel.layout?.straightThresholdDx ?? 60"
+          (input)="
+            onNumberField('layout.straightThresholdDx', $event, {
+              min: 20,
+              max: 400,
+            })
+          "
+        />
+      </label>
+      <p
+        class="field-error"
+        *ngIf="getError('layout.straightThresholdDx') as error"
+      >
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.columnGapPx')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        columnGapPx
+        <input
+          type="number"
+          min="16"
+          max="320"
+          [value]="settingsFormModel.layout?.columnGapPx ?? 64"
+          (input)="
+            onNumberField('layout.columnGapPx', $event, { min: 16, max: 320 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('layout.columnGapPx') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('layout.rowGapPx')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        rowGapPx
+        <input
+          type="number"
+          min="8"
+          max="240"
+          [value]="settingsFormModel.layout?.rowGapPx ?? 32"
+          (input)="
+            onNumberField('layout.rowGapPx', $event, { min: 8, max: 240 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('layout.rowGapPx') as error">
+        {{ error }}
+      </p>
+    </div>
+  </details>
+
+  <details open>
+    <summary
+      title="Configuraciones de presentacion y extraccion de datos en cards."
+    >
+      dataView
+    </summary>
+    <div class="panel-section">
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.titleKeyPriority')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        titleKeyPriority (JSON string[])
+        <textarea
+          rows="3"
+          [value]="titleKeyPriorityText"
+          (input)="
+            onJsonFieldInput(
+              'dataView.titleKeyPriority',
+              'titleKeyPriorityText',
+              'stringArray',
+              $event
+            )
+          "
+        ></textarea>
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.titleKeyPriority') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.hiddenKeysGlobal')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        hiddenKeysGlobal (JSON string[])
+        <textarea
+          rows="3"
+          [value]="hiddenKeysGlobalText"
+          (input)="
+            onJsonFieldInput(
+              'dataView.hiddenKeysGlobal',
+              'hiddenKeysGlobalText',
+              'stringArray',
+              $event
+            )
+          "
+        ></textarea>
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.hiddenKeysGlobal') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.noWrapKeys')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        noWrapKeys (JSON string[])
+        <textarea
+          rows="3"
+          [value]="noWrapKeysText"
+          (input)="
+            onJsonFieldInput(
+              'dataView.noWrapKeys',
+              'noWrapKeysText',
+              'stringArray',
+              $event
+            )
+          "
+        ></textarea>
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.noWrapKeys') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.labelData')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        labelData (JSON objeto de strings)
+        <textarea
+          rows="4"
+          [value]="labelDataText"
+          (input)="
+            onJsonFieldInput(
+              'dataView.labelData',
+              'labelDataText',
+              'recordString',
+              $event
+            )
+          "
+        ></textarea>
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.labelData') as error">
+        {{ error }}
+      </p>
+
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.treatScalarArraysAsAttribute')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="
+            settingsFormModel.dataView?.treatScalarArraysAsAttribute ?? true
+          "
+          (change)="
+            onBooleanField('dataView.treatScalarArraysAsAttribute', $event)
+          "
+        />
+        treatScalarArraysAsAttribute
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.maxDepth')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        maxDepth (nullable)
+        <input
+          type="number"
+          min="0"
+          max="20"
+          [value]="settingsFormModel.dataView?.maxDepth ?? ''"
+          (input)="
+            onNumberField('dataView.maxDepth', $event, {
+              min: 0,
+              max: 20,
+              integer: true,
+              nullable: true,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.maxDepth') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.previewMaxKeys')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        previewMaxKeys
+        <input
+          type="number"
+          min="1"
+          max="2000"
+          [value]="settingsFormModel.dataView?.previewMaxKeys ?? 999"
+          (input)="
+            onNumberField('dataView.previewMaxKeys', $event, {
+              min: 1,
+              max: 2000,
+              integer: true,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.previewMaxKeys') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.valueMaxChars')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        valueMaxChars (nullable)
+        <input
+          type="number"
+          min="1"
+          max="2000"
+          [value]="settingsFormModel.dataView?.valueMaxChars ?? ''"
+          (input)="
+            onNumberField('dataView.valueMaxChars', $event, {
+              min: 1,
+              max: 2000,
+              integer: true,
+              nullable: true,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.valueMaxChars') as error">
+        {{ error }}
+      </p>
+
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.valueShowTooltip')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.dataView?.valueShowTooltip ?? false"
+          (change)="onBooleanField('dataView.valueShowTooltip', $event)"
+        />
+        valueShowTooltip
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.maxCardWidth')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        maxCardWidth (nullable)
+        <input
+          type="number"
+          min="120"
+          max="1200"
+          [value]="settingsFormModel.dataView?.maxCardWidth ?? ''"
+          (input)="
+            onNumberField('dataView.maxCardWidth', $event, {
+              min: 120,
+              max: 1200,
+              nullable: true,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.maxCardWidth') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.maxCardHeight')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        maxCardHeight (nullable)
+        <input
+          type="number"
+          min="80"
+          max="2000"
+          [value]="settingsFormModel.dataView?.maxCardHeight ?? ''"
+          (input)="
+            onNumberField('dataView.maxCardHeight', $event, {
+              min: 80,
+              max: 2000,
+              nullable: true,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.maxCardHeight') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.defaultNodeSize.width')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        defaultNodeSize.width
+        <input
+          type="number"
+          min="120"
+          max="1200"
+          [value]="settingsFormModel.dataView?.defaultNodeSize?.width ?? 256"
+          (input)="
+            onNumberField('dataView.defaultNodeSize.width', $event, {
+              min: 120,
+              max: 1200,
+            })
+          "
+        />
+      </label>
+      <p
+        class="field-error"
+        *ngIf="getError('dataView.defaultNodeSize.width') as error"
+      >
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.defaultNodeSize.height')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        defaultNodeSize.height
+        <input
+          type="number"
+          min="60"
+          max="1200"
+          [value]="settingsFormModel.dataView?.defaultNodeSize?.height ?? 64"
+          (input)="
+            onNumberField('dataView.defaultNodeSize.height', $event, {
+              min: 60,
+              max: 1200,
+            })
+          "
+        />
+      </label>
+      <p
+        class="field-error"
+        *ngIf="getError('dataView.defaultNodeSize.height') as error"
+      >
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.showImage')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        showImage (nullable)
+        <input
+          type="text"
+          [value]="settingsFormModel.dataView?.showImage ?? ''"
+          (input)="
+            onTextField('dataView.showImage', $event, { nullable: true })
+          "
+        />
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.imageSizePx')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        imageSizePx
+        <input
+          type="number"
+          min="16"
+          max="192"
+          [value]="settingsFormModel.dataView?.imageSizePx ?? 32"
+          (input)="
+            onNumberField('dataView.imageSizePx', $event, { min: 16, max: 192 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.imageSizePx') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.imageShape')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        imageShape
+        <select
+          [value]="settingsFormModel.dataView?.imageShape ?? 'rounded'"
+          (change)="onTextField('dataView.imageShape', $event)"
+        >
+          <option value="square">square</option>
+          <option value="rounded">rounded</option>
+          <option value="circle">circle</option>
+        </select>
+      </label>
+
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.imageBorder')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.dataView?.imageBorder ?? false"
+          (change)="onBooleanField('dataView.imageBorder', $event)"
+        />
+        imageBorder
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.imageBg')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        imageBg (nullable)
+        <input
+          type="text"
+          [value]="settingsFormModel.dataView?.imageBg ?? ''"
+          (input)="onTextField('dataView.imageBg', $event, { nullable: true })"
+        />
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.imageFit')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        imageFit
+        <select
+          [value]="settingsFormModel.dataView?.imageFit ?? 'contain'"
+          (change)="onTextField('dataView.imageFit', $event)"
+        >
+          <option value="contain">contain</option>
+          <option value="cover">cover</option>
+          <option value="scale-down">scale-down</option>
+        </select>
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.imageFallback')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        imageFallback (nullable)
+        <input
+          type="text"
+          [value]="settingsFormModel.dataView?.imageFallback ?? ''"
+          (input)="
+            onTextField('dataView.imageFallback', $event, { nullable: true })
+          "
+        />
+      </label>
+
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.enableCollapse')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.dataView?.enableCollapse ?? true"
+          (change)="onBooleanField('dataView.enableCollapse', $event)"
+        />
+        enableCollapse
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.allowCardTextSelection')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.dataView?.allowCardTextSelection ?? true"
+          (change)="onBooleanField('dataView.allowCardTextSelection', $event)"
+        />
+        allowCardTextSelection
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.showCopyAllButton')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.dataView?.showCopyAllButton ?? false"
+          (change)="onBooleanField('dataView.showCopyAllButton', $event)"
+        />
+        showCopyAllButton
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.autoResizeCards')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.dataView?.autoResizeCards ?? true"
+          (change)="onBooleanField('dataView.autoResizeCards', $event)"
+        />
+        autoResizeCards
+      </label>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.paddingWidthPx')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        paddingWidthPx
+        <input
+          type="number"
+          min="0"
+          max="200"
+          [value]="settingsFormModel.dataView?.paddingWidthPx ?? 16"
+          (input)="
+            onNumberField('dataView.paddingWidthPx', $event, {
+              min: 0,
+              max: 200,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.paddingWidthPx') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('dataView.paddingHeightPx')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        paddingHeightPx
+        <input
+          type="number"
+          min="0"
+          max="200"
+          [value]="settingsFormModel.dataView?.paddingHeightPx ?? 0"
+          (input)="
+            onNumberField('dataView.paddingHeightPx', $event, {
+              min: 0,
+              max: 200,
+            })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('dataView.paddingHeightPx') as error">
+        {{ error }}
+      </p>
+    </div>
+  </details>
+
+  <details open>
+    <summary title="Opciones del viewport y visibilidad de toolbar.">
+      viewport
+    </summary>
+    <div class="panel-section">
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('viewport.height')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        height
+        <input
+          type="number"
+          min="240"
+          max="4000"
+          [value]="settingsFormModel.viewport?.height ?? 800"
+          (input)="
+            onNumberField('viewport.height', $event, { min: 240, max: 4000 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('viewport.height') as error">
+        {{ error }}
+      </p>
+
+      <label>
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('viewport.minHeight')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        minHeight
+        <input
+          type="number"
+          min="160"
+          max="2000"
+          [value]="settingsFormModel.viewport?.minHeight ?? 480"
+          (input)="
+            onNumberField('viewport.minHeight', $event, { min: 160, max: 2000 })
+          "
+        />
+      </label>
+      <p class="field-error" *ngIf="getError('viewport.minHeight') as error">
+        {{ error }}
+      </p>
+
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('viewport.showToolbar')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="settingsFormModel.viewport?.showToolbar ?? true"
+          (change)="onBooleanField('viewport.showToolbar', $event)"
+        />
+        showToolbar
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('viewport.toolbarControls.showLinkStyle')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="
+            settingsFormModel.viewport?.toolbarControls?.showLinkStyle ?? true
+          "
+          (change)="
+            onBooleanField('viewport.toolbarControls.showLinkStyle', $event)
+          "
+        />
+        toolbarControls.showLinkStyle
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="help('viewport.toolbarControls.showLayoutAlign')"
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="
+            settingsFormModel.viewport?.toolbarControls?.showLayoutAlign ?? true
+          "
+          (change)="
+            onBooleanField('viewport.toolbarControls.showLayoutAlign', $event)
+          "
+        />
+        toolbarControls.showLayoutAlign
+      </label>
+      <label class="checkbox-field">
+        <span
+          class="field-help"
+          [attr.data-tooltip]="
+            help('viewport.toolbarControls.showLayoutDirection')
+          "
+          tabindex="0"
+          aria-label="Informacion del campo"
+          >i</span
+        >
+        <input
+          type="checkbox"
+          [checked]="
+            settingsFormModel.viewport?.toolbarControls?.showLayoutDirection ??
+            true
+          "
+          (change)="
+            onBooleanField(
+              'viewport.toolbarControls.showLayoutDirection',
+              $event
+            )
+          "
+        />
+        toolbarControls.showLayoutDirection
+      </label>
+    </div>
+  </details>
+
+  <div class="reset-row">
+    <button type="button" class="reset-btn" (click)="resetAllChanges()">
+      Resetear cambios
+    </button>
+  </div>
+</aside>

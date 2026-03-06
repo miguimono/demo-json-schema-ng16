@@ -1,39 +1,59 @@
 <div id="schema">
   <div class="schema-component">
-    <h1>{{ title }}</h1>
     <ng-container *ngIf="legendVisible">
       <div class="schema-legend">
+        <div class="legend-header">
+          <h3>{{ legendTitle }}</h3>
+          <span class="legend-accent-key" *ngIf="effectiveAccentByKey as key">
+            Clave de acento: <code>{{ key }}</code>
+          </span>
+        </div>
+
         <ul class="legend-list">
-          <li class="legend-item schema-title">
-            <h3>{{ legendTitle }}</h3>
-          </li>
-          <li class="legend-item" *ngIf="accentByKey as key">
-            <span class="legend-accent-key">
-              Clave de acento: <code>{{ key }}</code>
-            </span>
-          </li>
           <li
             class="legend-item"
             *ngFor="let it of legendItems; trackBy: trackLegendItem"
           >
             <span
               class="legend-dot"
-              [class.dot-true]="it.color === 'green'"
-              [class.dot-false]="it.color === 'red'"
-              [class.dot-null]="it.color === 'grey'"
+              [style.backgroundColor]="legendColorMap[it.color]"
+              [style.borderColor]="legendColorMap[it.color]"
               aria-hidden="true"
             ></span>
-            <span class="legend-text">{{ it.text }}</span>
+            <span class="legend-text" [style.color]="legendColorMap[it.color]">
+              {{ it.text }}
+            </span>
           </li>
         </ul>
       </div>
     </ng-container>
+
     <div class="schema-wrapper">
       <schema
         [data]="schemeData"
-        [settings]="settings"
+        [settings]="resolvedSettings"
         [cardTemplate]="cardTemplate"
       ></schema>
     </div>
+
+    <section
+      class="schema-debug-grid"
+      *ngIf="showJsonDebugSection || showSchemaInputsDebugSection"
+    >
+      <article class="debug-card" *ngIf="showJsonDebugSection">
+        <header class="debug-card-header">
+          <h4>JSON (`data`)</h4>
+        </header>
+        <pre class="debug-pre">{{ debugDataJson }}</pre>
+      </article>
+
+      <article class="debug-card" *ngIf="showSchemaInputsDebugSection">
+        <header class="debug-card-header">
+          <h4>Payload enviado al schema</h4>
+          <p>`settings`, `cardTemplate`</p>
+        </header>
+        <pre class="debug-pre">{{ debugSchemaInputsJson }}</pre>
+      </article>
+    </section>
   </div>
 </div>
